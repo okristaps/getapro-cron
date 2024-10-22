@@ -1,9 +1,6 @@
 import { load } from "cheerio";
 import { Env } from "src";
-
 import { TwilioClient } from "src/clients/twilio";
-
-let lastJobIds: Set<string> = new Set();
 
 async function checkForNewJobs(env: Env) {
   const twilioClient = new TwilioClient(env.TWILIO_SID, env.TWILIO_AUTH_TOKEN, env.TWILIO_NUMBER_FROM);
@@ -16,6 +13,10 @@ async function checkForNewJobs(env: Env) {
 
     let currentJobIds = new Set<string>();
     let newJobsFound = false;
+
+    const storedJobIds = await env.GETAPRO_JOBS.get("lastJobIds");
+    console.log("storedJobIds", storedJobIds);
+    const lastJobIds = storedJobIds ? new Set(JSON.parse(storedJobIds)) : new Set();
 
     jobElements.each((index, element) => {
       const jobId = $(element).attr("data-id");
@@ -39,7 +40,7 @@ async function checkForNewJobs(env: Env) {
       console.log("No new jobs found.");
     }
 
-    lastJobIds = currentJobIds;
+    await env.GETAPRO_JOBS.put("lastJobIds", JSON.stringify(Array.from(currentJobIds)));
   } catch (error) {
     console.error("Error fetching or parsing jobs:", error);
   }

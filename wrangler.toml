@@ -5,9 +5,13 @@ compatibility_flags = [ "nodejs_compat" ]
 
 workers_dev = true
 route=""
-# [vars]
-# MY_VAR = "my-variable"
 
+
+
+
+kv_namespaces = [
+  { binding = "GETAPRO_JOBS", id = "bda05ca3c5994d6c906e354b4a5b5a90" }
+]
 
 
 # [observability]
@@ -18,5 +22,8 @@ route=""
 enabled = true
 head_sampling_rate = 1
 
+
+
 [triggers]
 crons = ["* * * * *"]
+

@@ -6,6 +6,7 @@ export interface Env {
   TWILIO_NUMBER_FROM: string;
   TWILIO_PHONE_TO: string;
   API_URL: string;
+  GETAPRO_JOBS: KVNamespace;
 }
 
 export default {
