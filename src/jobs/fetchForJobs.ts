@@ -36,11 +36,10 @@ async function checkForNewJobs(env: Env) {
         env.TWILIO_PHONE_TO,
         `New job listings have been added. Check them out at ${env.API_URL}`
       );
+      await env.GETAPRO_JOBS.put("lastJobIds", JSON.stringify(Array.from(currentJobIds)));
     } else {
       console.log("No new jobs found.");
     }
-
-    await env.GETAPRO_JOBS.put("lastJobIds", JSON.stringify(Array.from(currentJobIds)));
   } catch (error) {
     console.error("Error fetching or parsing jobs:", error);
   }
